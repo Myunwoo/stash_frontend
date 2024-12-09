@@ -1,0 +1,50 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint \"**/*.{ts,tsx,vue,js}\" --fix",
+    "lint-eslint": "eslint --ignore-path .gitignore **/*{ts,tsx,vue,js,json} --fix",
+    "lint-prettier": "prettier --write \"**/*.(ts|tsx|vue|js|json)\"",
+    "oag:gen:local": "(copy openapitools.local.json openapitools.json || cp openapitools.local.json openapitools.json) && openapi-generator-cli generate"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "@pinia/nuxt": "^0.7.0",
+    "axios": "^1.7.7",
+    "dayjs": "^1.11.13",
+    "nuxt": "^3.13.2",
+    "vue": "latest",
+    "vue-dompurify-html": "^5.1.0",
+    "vue-router": "latest",
+    "vuetify": "^3.7.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@openapitools/openapi-generator-cli": "^2.6.0",
+    "@types/axios": "^0.14.4",
+    "@types/js-cookie": "^3.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
+    "@typescript-eslint/parser": "^8.11.0",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-vue": "^9.29.1",
+    "globals": "^15.11.0",
+    "js-cookie": "^3.0.5",
+    "prettier": "^3.3.3",
+    "sass": "^1.80.4",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.11.0",
+    "vite": "^5.4.10",
+    "vite-plugin-vuetify": "^2.0.4",
+    "vue-tsc": "^2.1.6"
+  }
+}
