@@ -18,6 +18,9 @@ pipeline {
             }
         }
         stage('Deploy to S3') {
+            when {
+                branch 'main'
+            }
             steps {
                 withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
                     sh 'aws s3 sync ./dist s3://${S3_BUCKET} --delete'
