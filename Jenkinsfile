@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build Nuxt3') {
             when {
-                branch 'main'
+              branch 'main'
             }
             steps {
                 sh '''
@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Deploy to S3') {
             when {
-                branch 'main'
+              branch 'main'
             }
             steps {
                 withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
