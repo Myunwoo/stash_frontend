@@ -6,6 +6,9 @@ pipeline {
     }
     stages {
         stage('Build Nuxt3') {
+            when {
+                branch 'main'
+            }
             steps {
                 sh '''
                 pnpm install
@@ -23,7 +26,6 @@ pipeline {
         }
     }
 }
-
 
 
 // pipeline {
