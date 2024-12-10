@@ -10,25 +10,52 @@ pipeline {
               branch 'main'
             }
             steps {
-                sh '''
-                pnpm install
-                pnpm run oag gen
-                pnpm run build
-                '''
-            }
-        }
-        stage('Deploy to S3') {
-            when {
-              branch 'main'
-            }
-            steps {
-                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
-                    sh 'aws s3 sync ./dist s3://${S3_BUCKET} --delete'
-                }
+                echo 'Hello'
             }
         }
     }
 }
+
+
+// pipeline {
+//     agent any
+//     environment {
+//         AWS_REGION = 'ap-northeast-2'
+//         S3_BUCKET = 'stash-frontend-app'
+//     }
+//     stages {
+//         stage('Build Nuxt3') {
+//             when {
+//               branch 'main'
+//             }
+//             steps {
+//                 sh '''
+//                 pnpm install
+//                 pnpm run oag gen
+//                 pnpm run build
+//                 '''
+//             }
+//         }
+//         stage('Deploy to S3') {
+//             when {
+//               branch 'main'
+//             }
+//             steps {
+//                 withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
+//                     sh 'aws s3 sync ./dist s3://${S3_BUCKET} --delete'
+//                 }
+//             }
+//         }
+//     }
+//     post {
+//         success {
+//             echo 'Deployment completed successfully.'
+//         }
+//         failure {
+//             echo 'Deployment failed. Please check the logs.'
+//         }
+//     }
+// }
 
 
 // pipeline {

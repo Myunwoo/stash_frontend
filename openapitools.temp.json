@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "6.5.0",
+    "generators": {
+      "stash": {
+        "generatorName": "typescript-axios",
+        "templateDir": "#{cwd}/generate/template",
+        "output": "#{cwd}/generate/stash",
+        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/openapi_stash/stash.yaml"
+      },
+      "auth": {
+        "generatorName": "typescript-axios",
+        "templateDir": "#{cwd}/generate/template",
+        "output": "#{cwd}/generate/auth",
+        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/openapi_stash/auth.yaml"
+      }
+    }
+  }
+}

@@ -11,7 +11,8 @@
     "lint": "eslint \"**/*.{ts,tsx,vue,js}\" --fix",
     "lint-eslint": "eslint --ignore-path .gitignore **/*{ts,tsx,vue,js,json} --fix",
     "lint-prettier": "prettier --write \"**/*.(ts|tsx|vue|js|json)\"",
-    "oag:gen:local": "(copy openapitools.local.json openapitools.json || cp openapitools.local.json openapitools.json) && openapi-generator-cli generate"
+    "oag:gen:local": "(copy openapitools.local.json openapitools.json || cp openapitools.local.json openapitools.json) && openapi-generator-cli generate",
+    "oag:gen:temp": "(copy openapitools.local.json openapitools.json || cp openapitools.local.json openapitools.json) && openapi-generator-cli generate"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
