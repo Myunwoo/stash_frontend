@@ -26,3 +26,6 @@ logs
 # OpenAPI Generator
 generate/**
 openapitools.json
+!generate/template
+!generate/configuration.ts
+!generate/index.ts
