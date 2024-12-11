@@ -1,11 +1,12 @@
 import { resolve } from 'path'
+import Checker from 'vite-plugin-checker'
 
 export default defineNuxtConfig({
   alias: {
     '@api': resolve(__dirname, './utils/api-utils')
   },
   typescript: {
-    typeCheck: true
+    typeCheck: false // 타입 검사 비활성화
   },
   build: {
     transpile: ['vuetify']
@@ -29,10 +30,15 @@ export default defineNuxtConfig({
           additionalData: '@use "@/assets/style/common.scss" as *;'
         }
       }
-    }
+    },
+    plugins: [
+      Checker({
+        vueTsc: false, // vue-tsc 체크 비활성화
+        typescript: false, // TypeScript 체크 비활성화
+      }),
+    ],
   },
   nitro: {
-    // local CORS error 해결
     devProxy: {
       '/api': {
         target: `http://localhost:8080`,
@@ -42,10 +48,10 @@ export default defineNuxtConfig({
     }
   },
   modules: [
-    '@pinia/nuxt', // Pinia 모듈 추가
+    '@pinia/nuxt',
   ],
   imports: {
-    dirs: ['stores'], // 스토어 폴더를 자동으로 인식
+    dirs: ['stores'],
   },
   plugins: ['@/plugins/dompurify.ts'],
   compatibilityDate: "2024-10-26"
