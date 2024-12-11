@@ -20,9 +20,10 @@
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
     "nuxt": "^3.13.2",
-    "vue": "latest",
+    "vue": "^3.3.4",
+    "vue-demi": "0.14.6",
     "vue-dompurify-html": "^5.1.0",
-    "vue-router": "latest",
+    "vue-router": "^4.2.4",
     "vuetify": "^3.7.3"
   },
   "devDependencies": {
