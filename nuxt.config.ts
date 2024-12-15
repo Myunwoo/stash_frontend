@@ -1,5 +1,4 @@
 import { resolve } from 'path'
-import Checker from 'vite-plugin-checker'
 
 export default defineNuxtConfig({
   alias: {
@@ -31,12 +30,12 @@ export default defineNuxtConfig({
         }
       }
     },
-    plugins: [
-      Checker({
-        vueTsc: false, // vue-tsc 체크 비활성화
-        typescript: false, // TypeScript 체크 비활성화
-      }),
-    ],
+    // plugins: [
+    //   Checker({
+    //     vueTsc: false, // vue-tsc 체크 비활성화
+    //     typescript: false, // TypeScript 체크 비활성화
+    //   }),
+    // ],
   },
   nitro: {
     devProxy: {
