@@ -47,12 +47,6 @@ pipeline {
                     
                     echo "Restarting Nuxt application..."
                     ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${EC2_TARGET} "cd /home/ubuntu/nuxt-app/server && pm2 stop nuxt-app || true && pm2 start index.mjs --name nuxt-app"
-
-                    echo "Check pm2 list"
-                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${EC2_TARGET} "pm2 list"
-
-                    echo "Check pm2 log"
-                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${EC2_TARGET} "pm2 logs nuxt-app"
                     '''
                 }
             }
