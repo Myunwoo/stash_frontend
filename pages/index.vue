@@ -1,57 +1,120 @@
 <template>
-  <v-container fluid>
-    <v-row dense justify="center">
-      <v-col v-for="(stash, index) in stashStore.stashList.stashDtlList" :key="index" cols="12" sm="6" md="4" lg="3"
-        class="my-4">
-        <StashCard v-bind="stash" @delete="onDeleteStash" @update="onUpdateStash" />
-      </v-col>
-    </v-row>
-
-    <AtomPlus :isFloating="true" size="big" @click="onFloatingButtonClick" />
-    <AddModifyStashDialog :isCreateMode="true" :isOpen="isAddDialogOpen" @update:isOpen="isAddDialogOpen = $event"
-      @create="onCreateStash" />
-  </v-container>
+  <div class="layout">
+    <div class="layout__row">
+      <div class="layout__column layout__stash">
+        <h2 class="layout__title">Stash</h2>
+        <div v-for="(stash, index) in stashStore.stashList.stashDtlList" :key="index">
+          <StashCard v-bind="stash" @delete="onDeleteStash" @update="onUpdateStash" />
+        </div>
+      </div>
+      <div class="layout__column layout__json">
+        <h2 class="layout__title">Saved JSON</h2>
+        <div v-for="(stash, index) in stashStore.stashList.stashDtlList" :key="index">
+          <StashCard v-bind="stash" @delete="onDeleteStash" @update="onUpdateStash" />
+        </div>
+      </div>
+    </div>
+    <button class="layout__floating-button" @click="onFloatingButtonClick">+</button>
+    <AddModifyStashDialog
+      :isCreateMode="true"
+      :isOpen="isAddDialogOpen"
+      @update:isOpen="isAddDialogOpen = $event"
+      @create="onCreateStash"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'auth',
-  layout: 'with-toolbar'
+  middleware: 'auth'
 })
 import type { CreateStashInDTO, UpdateStashInDTO } from '@/generate/stash/api'
-// Store
+
 const stashStore = useStashStore()
 
-// 등록 다이얼로그 노출 여부
 const isAddDialogOpen = ref(false)
 
-/** event handler */
-// 플로팅 버튼 클릭
 const onFloatingButtonClick = () => {
   isAddDialogOpen.value = true
 }
-// 일정 삭제
 const onDeleteStash = async (stash_id: number) => {
   await stashStore.deleteStash(stash_id)
 }
-// 일정 수정
 const onUpdateStash = async (data: any) => {
   await stashStore.updateStash(data)
 }
-// 일정 생성
 const onCreateStash = async (data: CreateStashInDTO) => {
   await stashStore.createStash(data)
 }
 
-/** lifecycle functions */
 onMounted(async () => {
   await stashStore.fetchStashList()
 })
 </script>
 
 <style scoped>
-.my-4 {
-  padding: 8px;
-  /* 카드 간의 여백 */
+.layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  background-color: #f4f4f4;
+}
+
+.layout__row {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout__column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.layout__title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.layout__stash {
+  flex: 1;
+}
+
+.layout__json {
+  flex: 1;
+}
+
+.layout__floating-button {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.layout__floating-button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: calc(100vw * 0.9)) {
+  .layout__row {
+    flex-direction: row;
+  }
 }
 </style>
