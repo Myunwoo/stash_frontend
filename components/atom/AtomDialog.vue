@@ -53,44 +53,36 @@ const props = withDefaults(defineProps<Props>(), {
   msg: ''
 })
 
-// 이벤트 등록
 const emit = defineEmits([
   'confirm',
   'close',
   'txtLink'
 ])
 
-// computed variables
 const header = computed(() => props.option?.header || '안내')
 const btnOkShow = computed(() => props.type !== 'error')
 const btnCancelShow = computed(() => props.type === 'confirm' ? true : props.option?.btnCancelShow)
 const confirmLabel = computed(() => props.option?.confirmLabel || '확인')
 const cancelLabel = computed(() => props.option?.cancelLabel || '취소')
 const cProps = computed(() => props)
-
-// ref variables
 const bgDim = ref(false)
 const visibleVal = ref(false)
 
-// watch props
 watch(cProps, (newProps) => {
   bgDim.value = newProps.option?.bgDim || false
   visibleVal.value = newProps.visible
 }, { deep: true })
 
-// watch visible
 watch(visibleVal, (newVisible) => {
   if (!newVisible) {
     emitClose()
   }
 }, { deep: true })
 
-// confirm event emit
 const emitConfirm = () => {
   emit('confirm', true)
 }
 
-// close event emit
 const emitClose = () => {
   emit('close', false)
 }
