@@ -1,5 +1,13 @@
 <template>
   <div class="layout">
+    <div class="layout__header">
+      <img 
+        src="/images/setting.png" 
+        alt="Account" 
+        class="layout__header-image" 
+        @click="goToAccount"
+      />
+    </div>
     <div class="layout__row">
       <div class="layout__column layout__stash">
         <h2 class="layout__title">Stash</h2>
@@ -28,8 +36,10 @@
 definePageMeta({
   middleware: 'auth'
 })
+import { useRouter } from 'vue-router'
 import type { CreateStashInDTO, UpdateStashInDTO } from '@/generate/stash/api'
 
+const router = useRouter()
 const stashStore = useStashStore()
 
 const isAddDialogOpen = ref(false)
@@ -47,6 +57,10 @@ const onCreateStash = async (data: CreateStashInDTO) => {
   await stashStore.createStash(data)
 }
 
+const goToAccount = () => {
+  router.push('/account')
+}
+
 onMounted(async () => {
   await stashStore.fetchStashList()
 })
@@ -61,6 +75,23 @@ onMounted(async () => {
   align-items: center;
   padding: 16px;
   background-color: #f4f4f4;
+}
+
+.layout__header {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.layout__header-image {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.layout__header-image:hover {
+  transform: scale(1.1);
 }
 
 .layout__row {

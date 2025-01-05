@@ -10,7 +10,7 @@ const { dialogShow, dialogType, dialogMsg, dialogOptions } = storeToRefs(dialogS
       <NuxtPage />
       <AtomLoadingDialog />
       <client-only>
-        <AtomDialog :visible="dialogShow" :type="dialogType" :msg="dialogMsg" :option="dialogOptions"
+        <Dialog :visible="dialogShow" :type="dialogType" :msg="dialogMsg" :option="dialogOptions"
           @confirm="dialogOnConfirm()" @close="dialogOnCancel()" />
       </client-only>
     </NuxtLayout>

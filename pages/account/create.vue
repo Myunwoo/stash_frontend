@@ -36,7 +36,7 @@
       </button>
 
       <button class="account-create__button account-create__button--login" @click="goToLogin">
-        이미 계정이 있으신가요? 로그인
+        로그인 페이지로
       </button>
     </div>
   </div>
@@ -120,10 +120,11 @@ const goToLogin = () => {
 .account-create {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width:100%;
   height: 100%;
-  background-color: #eaeaea;
+  background-color: #f4f4f4;
+  padding: 16px;
 }
 
 .account-create__container {

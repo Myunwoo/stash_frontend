@@ -15,19 +15,7 @@
     :title="props.title"
     :description="props.description"
     @update:isOpen="isModifyDialogOpen = $event"
-    @cancel="onCancel"
     @modify="onModify"
-  />
-
-  <AtomConfirmDialog
-    :isOpen="isConfirmDialogOpen"
-    :message="confirmDialogConfig.message"
-    :confirmText="confirmDialogConfig.confirmText"
-    :cancelText="confirmDialogConfig.cancelText"
-    :confirmColor="confirmDialogConfig.confirmColor"
-    @update:isOpen="isConfirmDialogOpen = $event"
-    @cancel="onCancel"
-    @confirm="onConfirmDelete()"
   />
 </template>
 
@@ -75,31 +63,17 @@ const emit = defineEmits([
 const loadingStore = useLoadingStore()
 // 수정 다이얼로그 노출 여부
 const isModifyDialogOpen = ref(false)
-// 수정/삭제 다이얼로그 노출 여부
-const isConfirmDialogOpen = ref(false)
-
-const confirmDialogConfig = ref({
-  message: '',
-  confirmText: '',
-  cancelText: '',
-  confirmColor: '',
-})
 
 const onClickModify = () => {
   isModifyDialogOpen.value = true
 }
 
-const onClickDelete = () => {
-  confirmDialogConfig.value = {
-    message: '삭제하시겠습니까?',
-    confirmText: '삭제',
-    cancelText: '취소',
-    confirmColor: 'red',
+const onClickDelete = async () => {
+  const confirmVal = await showConfirm('삭제하시겠습니까?')
+  if (confirmVal) {
+    emit('delete', props.stash_id)
   }
-  isConfirmDialogOpen.value = true
 }
-
-const onCancel = () => { }
 
 const onModify = (data: any) => {
   const updateData = {
@@ -107,10 +81,6 @@ const onModify = (data: any) => {
     ...data
   }
   emit('update', updateData)
-}
-
-const onConfirmDelete = () => {
-  emit('delete', props.stash_id)
 }
 </script>
 
