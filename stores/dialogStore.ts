@@ -27,8 +27,6 @@ export const useDialogStore = defineStore({
         dialogOptions: op
       })
     },
-
-    // open confirm popup
     showComConfirm(msg: string, dialogType: string, op?: object) {
       this.$patch({
         dialogShow: true,
@@ -37,7 +35,6 @@ export const useDialogStore = defineStore({
         dialogOptions: op
       })
     },
-
     showComError(msg: string, dialogType: string, op?: object) {
       this.$patch({
         dialogShow: true,
@@ -46,7 +43,6 @@ export const useDialogStore = defineStore({
         dialogOptions: op
       })
     },
-
     dialogInitialState() {
       this.$patch({
         dialogShow: false,

@@ -1,9 +1,9 @@
 interface ErrorOption {
-  notifyType?: string, // alert, toast, redirect
-  throwError?: boolean, // true 시 에러페이지
-  message?: string, // 에러 메시지
-  statusCode?: number, // Http 상태 코드
-  path?: string // Redirect 시 이동할 경로
+  notifyType?: string,
+  throwError?: boolean,
+  message?: string,
+  statusCode?: number,
+  path?: string
 }
 
 interface DialogOption {
@@ -33,6 +33,22 @@ const showAlert = (msg: string, options?: DialogOption) => {
   })
 }
 
+const showConfirm = (msg:string, options?: DialogOption) => {
+  const dialogStore = useDialogStore()
+  const defaultOption = {
+    btnCancelShow: true,
+    btnOkShow: true,
+    btnCloseShow: true,
+    bgDim: true, // ssp1.0과 동일하게 닫히지 않도록 수정
+    ...options
+  }
+
+  dialogStore.showComConfirm(msg, 'confirm', defaultOption)
+  return new Promise((resolve) => {
+    resolveCallback = resolve
+  })
+}
+
 const closeDialog = () => {
   const dialogStore = useDialogStore()
   dialogStore.dialogInitialState()
@@ -50,6 +66,7 @@ const dialogOnCancel = () => {
 
 export {
   showAlert,
+  showConfirm,
   closeDialog,
   dialogOnConfirm,
   dialogOnCancel

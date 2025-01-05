@@ -23,7 +23,10 @@
 </template>
 
 <script setup lang="ts">
+useHead({ title: 'Login' })
+
 import { AxiosError } from 'axios'
+
 const router = useRouter()
 const AuthControllerApi = new API.AUTH.AuthControllerApi(configuration, configuration.basePath, axiosInstance)
 

@@ -186,6 +186,8 @@ const onMouseUp = () => {
   align-items: flex-start;
   justify-content: flex-start;
   position: relative;
+  padding-top: 40px;
+  background-color: #f4f4f4;
 }
 
 .main-layout__button {

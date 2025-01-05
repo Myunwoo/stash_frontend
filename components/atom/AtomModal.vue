@@ -1,3 +1,21 @@
+<template>
+  <VDialog v-model="open" eager no-click-animation :width="cSize" :persistent="!bgDim" :open-on-focus="openOnFocus"
+    :retain-focus="retainFocus" :class="{ dimmed: bgDim }">
+    <div class="modal-header">
+      <slot name="header" />
+      <span class="close-btn" @click="closePopup" />
+    </div>
+
+    <div class="modal-body" :class="[props.scrollable ? 'scroll' : '']">
+      <slot name="content" />
+    </div>
+
+    <div class="modal-foot">
+      <slot name="footer" />
+    </div>
+  </VDialog>
+</template>
+
 <script setup lang="ts">
 interface Props {
   visible?: boolean,
@@ -70,21 +88,3 @@ const closePopup = () => {
 }
 
 </script>
-
-<template>
-  <VDialog v-model="open" eager no-click-animation :width="cSize" :persistent="!bgDim" :open-on-focus="openOnFocus"
-    :retain-focus="retainFocus" :class="{ dimmed: bgDim }">
-    <div class="modal-header">
-      <slot name="header" />
-      <span class="close-btn" @click="closePopup" />
-    </div>
-
-    <div class="modal-body" :class="[props.scrollable ? 'scroll' : '']">
-      <slot name="content" />
-    </div>
-
-    <div class="modal-foot">
-      <slot name="footer" />
-    </div>
-  </VDialog>
-</template>

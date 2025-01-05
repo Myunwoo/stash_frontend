@@ -37,8 +37,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'auth',
-  layout: 'with-toolbar'
+  middleware: 'auth'
 })
 import dayjs from 'dayjs'
 import type { CreateStashInDTO } from '@/generate/stash/api'
