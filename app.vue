@@ -10,7 +10,6 @@ const { loadingShow } = storeToRefs(loadingStore)
   <div>
     <NuxtLayout>
       <NuxtPage />
-      <AtomLoadingDialog />
       <client-only>
         <Dialog :visible="dialogShow" :type="dialogType" :msg="dialogMsg" :option="dialogOptions"
           @confirm="dialogOnConfirm()" @close="dialogOnCancel()" />
