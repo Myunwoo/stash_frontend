@@ -36,30 +36,30 @@ const savedLeftWidth = ref<string | null>(null)
 const savedRightWidth = ref<string | null>(null)
 const arrowSrc = ref('/images/arrow.png')
 const arrowAlt = ref('Full')
-const leftArrowRotation = ref(0)
-const rightArrowRotation = ref(0)
+const leftArrowRotation = ref(90)
+const rightArrowRotation = ref(-90)
 
-const rotateImage90 = (rotation: globalThis.Ref<number, number>) => {
-  rotation.value = (rotation.value + 90) % 360
+const rotateImage180 = (rotation: globalThis.Ref<number, number>) => {
+  rotation.value = (rotation.value + 180) % 360
 }
 
-const rotateImageMinus90 = (rotation: globalThis.Ref<number, number>) => {
-  rotation.value = (rotation.value - 90) % 360
+const rotateImageMinus180 = (rotation: globalThis.Ref<number, number>) => {
+  rotation.value = (rotation.value - 180) % 360
 }
 
 watch(isLeftFull, (newProps) => {
   if (newProps) {
-    rotateImageMinus90(leftArrowRotation)
+    rotateImageMinus180(leftArrowRotation)
   } else {
-    rotateImage90(leftArrowRotation)
+    rotateImage180(leftArrowRotation)
   }
 })
 
 watch(isRightFull, (newProps) => {
   if (newProps) {
-    rotateImageMinus90(rightArrowRotation)
+    rotateImageMinus180(rightArrowRotation)
   } else {
-    rotateImage90(rightArrowRotation)
+    rotateImage180(rightArrowRotation)
   }
 })
 
