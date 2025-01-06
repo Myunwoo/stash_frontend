@@ -5,7 +5,8 @@ import { setCookie, getCookie, removeCookie } from '@/utils/cookie-utils'
 
 type AccessToken = string;
 type SubscriberCallback = (newAccessToken: AccessToken) => void;
-
+// 현재 처리 중 request 수
+let activeRequestCount = 0
 const axiosInstance = axios.create()
 let isRefreshing = false
 let failedQueue: {
@@ -41,7 +42,21 @@ const addSubscriber = (callback: SubscriberCallback) => {
   subscribers.push(callback);
 }
 
+const increaseRequestCount = () => {
+  activeRequestCount++
+}
+
+const decreaseRequestCount = () => {
+  activeRequestCount--
+  if (activeRequestCount === 0) {
+    showLoading(false)
+  }
+}
+
+// request interceptor
 axiosInstance.interceptors.request.use((config) => {
+  increaseRequestCount()
+  showLoading(true)
   const accessToken = getCookie('SAT')
   if (isNotEmpty(accessToken)) {
     config.headers.Authorization = `Bearer ${accessToken}`
@@ -49,13 +64,16 @@ axiosInstance.interceptors.request.use((config) => {
   return config
 }, (error) => Promise.reject(error))
 
+// response interceptor
 axiosInstance.interceptors.response.use((response) => {
+  decreaseRequestCount()
   return response
 }, async (error: AxiosError) => {
+  decreaseRequestCount()
+
   const originalRequest = error.config
   // 액세스 토큰 만료
   if (error.response?.status === 401) {
-    console.log('액세스 토큰 만료', error.response?.status)
     const refreshToken = getCookie('SRT')
     if (!refreshToken) {
       removeCookie('SAT')
@@ -105,6 +123,7 @@ axiosInstance.interceptors.response.use((response) => {
           }
         })
         .catch((error) => {
+
           failedQueue.forEach(queue => queue.reject(error))
           reject(error)
           logout()

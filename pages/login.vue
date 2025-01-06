@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 useHead({ title: 'Login' })
-
 import { AxiosError } from 'axios'
 
 const router = useRouter()
