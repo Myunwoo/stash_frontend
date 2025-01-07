@@ -144,5 +144,6 @@ export {
   configuration,
   axiosInstance,
   API,
+  logout,
   type AxiosError
 }

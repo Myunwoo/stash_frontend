@@ -4,6 +4,17 @@
       <h2 class="account-update__title">회원정보 변경</h2>
 
       <div class="account-update__field">
+        <label for="username" class="account-update__label">아이디(변경 불가)</label>
+        <input
+          id="username"
+          type="text"
+          v-model="username"
+          class="account-update__input--readonly"
+          disabled
+        />
+      </div>
+
+      <div class="account-update__field">
         <label for="name" class="account-update__label">이름</label>
         <input
           id="name"
@@ -11,18 +22,6 @@
           v-model="name"
           class="account-update__input"
           placeholder="이름을 입력하세요"
-        />
-      </div>
-
-      <div class="account-update__field">
-        <label for="username" class="account-update__label">아이디</label>
-        <input
-          id="username"
-          type="text"
-          v-model="username"
-          class="account-update__input"
-          readonly
-          placeholder="아이디는 수정할 수 없습니다"
         />
       </div>
 
@@ -62,70 +61,75 @@
 </template>
 
 <script setup lang="ts">
-import { AxiosError } from 'axios';
-import type { UpdateUserInDTO } from '@/generate/auth/api';
+import { AxiosError } from 'axios'
 
 definePageMeta({
   middleware: 'auth',
 });
 
-const router = useRouter();
-const userStore = useUserStore();
-const AuthControllerApi = new API.AUTH.AuthControllerApi(configuration, configuration.basePath, axiosInstance);
+const router = useRouter()
+const userStore = useUserStore()
 
-const name = ref('');
-const username = ref('');
-const inputPassword = ref('');
-const confirmPassword = ref('');
+const name = ref('')
+const username = ref('')
+const inputPassword = ref('')
+const confirmPassword = ref('')
 
 onMounted(async () => {
-  await userStore.fetchUserInfo(getCookie('username'));
-});
+  await userStore.fetchUserInfo(getCookie('username'))
+  initInputs()
+})
+
+const initInputs = () => {
+  name.value = userStore.name
+  username.value = userStore.username
+}
 
 const validatePasswordMatch = () => {
   if (inputPassword.value !== confirmPassword.value) {
-    showAlert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-    return false;
+    showAlert('비밀번호와 비밀번호 확인이 일치하지 않습니다.')
+    return false
   }
-  return true;
-};
+  return true
+}
 
 const onClickUpdateUser = async () => {
-  if (inputPassword.value && !validatePasswordMatch()) return;
+  if (inputPassword.value && !validatePasswordMatch()) return
 
-  const param: UpdateUserInDTO = {
+  const param = {
     name: name.value,
     username: getCookie('username'),
     password: inputPassword.value || undefined,
-  };
+  }
 
   try {
-    await AuthControllerApi.updateUser(param);
-    showAlert('회원정보가 성공적으로 변경되었습니다.');
-    router.push('/');
+    await userStore.updateUserInfo(param)
+    showAlert('회원정보가 성공적으로 변경되었습니다.')
+    userStore.clearUserInfo()
+    logout()
   } catch (e) {
-    handleUpdateUserError(e);
+    handleUpdateUserError(e)
   }
-};
+}
 
 const handleUpdateUserError = (e: unknown) => {
   if (e instanceof AxiosError) {
-    const errordata = e.response?.data;
-    const code = getComCd(errordata);
-    const msg = getComMsg(errordata);
+    const errordata = e.response?.data
+    const code = getComCd(errordata)
+    const msg = getComMsg(errordata)
     if (code === 'MSG0004') {
-      showAlert('회원정보 변경 중 오류가 발생했습니다.');
+      showAlert('회원정보 변경 중 오류가 발생했습니다.')
     } else {
-      showAlert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+      showAlert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.')
     }
   } else {
-    console.error('알 수 없는 오류가 발생했습니다.', e);
+    console.error('알 수 없는 오류가 발생했습니다.', e)
   }
-};
+}
 
 const goToHome = () => {
-  router.push('/');
-};
+  router.push('/')
+}
 </script>
 
 <style scoped>
@@ -181,6 +185,14 @@ const goToHome = () => {
   border-color: #007bff;
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.account-update__input--readonly {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .account-update__input--error {
