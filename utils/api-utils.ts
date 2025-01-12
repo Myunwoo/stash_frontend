@@ -134,7 +134,7 @@ axiosInstance.interceptors.response.use((response) => {
         })
     })
   } else if (error.response?.status === 403) {
-    console.log('403 에러 발생')
+    console.error('403 에러 발생')
     logout()
   }
   return Promise.reject(error)

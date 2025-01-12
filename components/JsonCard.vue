@@ -1,26 +1,17 @@
 <template>
-  <div class="card" @click="onClickModify">
+  <div class="card" @click="onClickCard">
     <div class="card__header">
       <div class="card__title">{{ props.title }}</div>
       <div class="card__actions">
         <button class="card__chip card__chip--delete" @click.stop="onClickDelete">✕</button>
       </div>
     </div>
-    <div class="card__description">{{ props.description }}</div>
   </div>
-
-  <StashModifyDialog
-    :isOpen="isModifyDialogOpen"
-    :title="props.title"
-    :description="props.description"
-    :stash_id="props.stash_id"
-    @update:isOpen="isModifyDialogOpen = $event"
-  />
 </template>
 
 <script setup lang="ts">
 const props = defineProps({
-  stash_id: {
+  id: {
     type: Number,
     required: true
   },
@@ -28,15 +19,7 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  description: {
-    type: String,
-    default: ''
-  },
-  start_time: {
-    type: String,
-    default: ''
-  },
-  end_time: {
+  json_content: {
     type: String,
     default: ''
   },
@@ -50,18 +33,17 @@ const emit = defineEmits([
   'update',
   'delete'
 ])
-const stashStore = useStashStore()
-const isModifyDialogOpen = ref(false)
-
-const onClickModify = () => {
-  isModifyDialogOpen.value = true
-}
+const jsonStore = useJsonStore()
 
 const onClickDelete = async () => {
   const confirmVal = await showConfirm('삭제하시겠습니까?')
   if (confirmVal) {
-    stashStore.deleteStash(props.stash_id)
+    jsonStore.deleteJson(props.id)
   }
+}
+
+const onClickCard = () => {
+  jsonStore.triggerEvent(props.json_content)
 }
 </script>
 

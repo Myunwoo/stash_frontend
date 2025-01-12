@@ -15,6 +15,12 @@
         "templateDir": "#{cwd}/generate/template",
         "output": "#{cwd}/generate/auth",
         "inputSpec": "/Users/ihw/Documents/stash/src/main/resources/openapi_stash/auth.yaml"
+      },
+      "json": {
+        "generatorName": "typescript-axios",
+        "templateDir": "#{cwd}/generate/template",
+        "output": "#{cwd}/generate/json",
+        "inputSpec": "/Users/ihw/Documents/stash/src/main/resources/openapi_stash/json.yaml"
       }
     }
   }
