@@ -1,12 +1,8 @@
 <template>
   <div class="json-parser">
     <h2 class="json-parser__title">JSON Parser</h2>
-    <textarea
-      class="json-parser__input"
-      v-model="jsonInput"
-      placeholder="Paste your JSON here"
-      @input="adjustHeight($event)"
-    ></textarea>
+    <textarea class="json-parser__input" v-model="jsonInput" placeholder="Paste your JSON here"
+      @input="adjustHeight($event)"></textarea>
     <div class="json-parser__output">
       <h3>Parsed Output</h3>
       <pre>{{ parsedOutput }}</pre>
@@ -17,13 +13,35 @@
     </div>
     <button class="json-parser__button" @click="onClickSave">저장</button>
   </div>
+  <JsonSaveDialog :isOpen="isSaveDialogOpen" @update:isOpen="isSaveDialogOpen = $event" @confirm="handleConfirmSave" />
 </template>
 
 <script setup lang="ts">
+import { deflate, inflate } from 'pako';
+
+const jsonStore = useJsonStore()
 const jsonInput = ref('')
 const parsedOutput = ref<null | object>(null)
 const error = ref<null | string>(null)
 const isLoggedIn = computed(() => !!getCookie('SAT'))
+const isSaveDialogOpen = ref(false)
+
+watch(
+  () => jsonStore.eventTriggered,
+  (newVal) => {
+    if (newVal) {
+      jsonInput.value = decompressJson(jsonStore.jsonInput)
+      nextTick(() => {
+        const textarea = document.querySelector('.json-parser__input') as HTMLTextAreaElement
+        if (textarea) {
+          adjustHeight({ target: textarea })
+        }
+      })
+      jsonStore.resetEvent()
+    }
+  }
+)
+
 
 watch(jsonInput, async () => {
   try {
@@ -37,15 +55,39 @@ watch(jsonInput, async () => {
 
 const onClickSave = () => {
   if (isLoggedIn.value) {
-    showAlert('저장 api 호출')
+    isSaveDialogOpen.value = true
   } else {
     showAlert('로그인 후 저장할 수 있습니다.')
   }
 }
 
-const adjustHeight = (event: Event) => {
-  const element = event.target as HTMLTextAreaElement
-  element.style.height = `${element.scrollHeight}px`
+const handleConfirmSave = (title: string) => {
+  saveData(title, jsonInput.value)
+}
+
+const adjustHeight = (event: Event | { target: HTMLTextAreaElement }) => {
+  const element = (event.target as HTMLTextAreaElement)
+  if (element) {
+    element.style.height = 'auto'
+    element.style.height = `${element.scrollHeight}px`
+  }
+}
+
+const compressJson = (json: string): string => {
+  const compressed = deflate(json)
+  return btoa(String.fromCharCode(...compressed))
+}
+
+const decompressJson = (compressed: string): string => {
+  const decoded = Uint8Array.from(atob(compressed), (c) => c.charCodeAt(0))
+  const decompressed = inflate(decoded, { to: 'string' })
+  return decompressed
+}
+
+
+const saveData = async (title: string, jsonInput: string) => {
+  const compressedJson = compressJson(jsonInput)
+  await jsonStore.createJson({ title, json_content: compressedJson })
 }
 </script>
 

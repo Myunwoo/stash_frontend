@@ -20,8 +20,8 @@
       </div>
       <div class="layout__column layout__json">
         <h2 class="layout__title">Saved JSON</h2>
-        <div v-for="(stash, index) in stashStore.stashList.stashDtlList" :key="index">
-          <StashCard v-bind="stash" />
+        <div v-for="(jsonData, index) in jsonStore.jsonList.jsonDtlList" :key="index">
+          <JsonCard v-bind="jsonData" />
         </div>
       </div>
     </div>
@@ -40,6 +40,7 @@ definePageMeta({
 
 const router = useRouter()
 const stashStore = useStashStore()
+const jsonStore = useJsonStore()
 
 const isAddDialogOpen = ref(false)
 
@@ -53,6 +54,7 @@ const goToAccount = () => {
 
 onMounted(async () => {
   await stashStore.fetchStashList()
+  await jsonStore.fetchJsonList()
 })
 </script>
 
