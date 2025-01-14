@@ -8,19 +8,19 @@
         "generatorName": "typescript-axios",
         "templateDir": "#{cwd}/generate/template",
         "output": "#{cwd}/generate/stash",
-        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/openapi_stash/stash.yaml"
+        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/stash.yaml"
       },
       "auth": {
         "generatorName": "typescript-axios",
         "templateDir": "#{cwd}/generate/template",
         "output": "#{cwd}/generate/auth",
-        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/openapi_stash/auth.yaml"
+        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/auth.yaml"
       },
       "json": {
         "generatorName": "typescript-axios",
         "templateDir": "#{cwd}/generate/template",
         "output": "#{cwd}/generate/json",
-        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/openapi_stash/json.yaml"
+        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/json.yaml"
       }
     }
   }
