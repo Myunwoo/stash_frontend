@@ -15,6 +15,12 @@
         "templateDir": "#{cwd}/generate/template",
         "output": "#{cwd}/generate/auth",
         "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/openapi_stash/auth.yaml"
+      },
+      "json": {
+        "generatorName": "typescript-axios",
+        "templateDir": "#{cwd}/generate/template",
+        "output": "#{cwd}/generate/json",
+        "inputSpec": "https://stash-frontend-app.s3.ap-northeast-2.amazonaws.com/openapi_stash/json.yaml"
       }
     }
   }
