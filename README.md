@@ -19,9 +19,4 @@
 
 ### 기술 스택
 
-| **Nuxt3**  |
-| **Vue3**   |
-| **OpenAPI Generator** |
-| **TypeScript** |
-| **Pinia**  |
-| **Vite**   |
+**Nuxt3**, **Vue3**, **OpenAPI Generator**, **TypeScript**, **Pinia**, **Vite**
