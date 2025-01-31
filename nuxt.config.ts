@@ -30,7 +30,6 @@ export default defineNuxtConfig({
         }
       }
     },
-    // plugins: [
   },
   nitro: {
     devProxy: {
