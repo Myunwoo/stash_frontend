@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     '@api': resolve(__dirname, './utils/api-utils')
   },
   typescript: {
-    typeCheck: false // 타입 검사 비활성화
+    typeCheck: false
   },
   build: {
     transpile: ['vuetify']
@@ -31,16 +31,11 @@ export default defineNuxtConfig({
       }
     },
     // plugins: [
-    //   Checker({
-    //     vueTsc: false, // vue-tsc 체크 비활성화
-    //     typescript: false, // TypeScript 체크 비활성화
-    //   }),
-    // ],
   },
   nitro: {
     devProxy: {
       '/api': {
-        target: `http://localhost:8080`,
+        target: process.env.API_BASE_URL,
         changeOrigin: true,
         autoRewrite: true
       }
