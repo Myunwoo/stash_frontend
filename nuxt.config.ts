@@ -7,11 +7,7 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: false
   },
-  build: {
-    transpile: ['vuetify']
-  },
   css: [
-    'vuetify/styles',
     '@mdi/font/css/materialdesignicons.min.css'
   ],
   components: [
