@@ -1,8 +1,9 @@
 # Stash
----
 > JSON Parser & Memo Storage Application
 
 <img width="542" alt="스크린샷 2025-01-31 오후 7 50 30" src="https://github.com/user-attachments/assets/189d2d07-2823-4e8b-a5fe-3c55cfe6fdae" />
+
+---
 
 ### 프로젝트 개요
 
