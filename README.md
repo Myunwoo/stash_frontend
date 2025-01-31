@@ -26,38 +26,106 @@
 ### 프로젝트 아키텍처
 
 <details>
-<summary>접기/펼치기</summary>
+<summary>아키텍처 설명 접기/펼치기</summary>
 
-## 접은 제목
-EC2 Instances
-FE EC2 (Nuxt3)
-BE EC2 (Spring Boot)
-Jenkins EC2 (CI/CD 서버)
-AWS Services
-RDS (MySQL)
-S3 (정적 파일 저장 & OpenAPI YAML 파일 저장소)
-네트워크 및 보안 그룹 설정
+#### AWS Service
+| 요소       | 사용 목적 |
+|------------|--------------------------------|
+| **FE EC2**  | Nuxt3 |
+| **BE EC2**   | Spring Boot |
+| **Jenkins EC2** | CI/CD 서버 |
+| **RDS** | MySQL DB |
+| **S3**  | 정적 파일 저장 & OpenAPI YAML 파일 저장소 |
+
+
+#### 네트워크 및 보안 그룹 설정
 VPC (FE, BE, Jenkins EC2 포함)
 보안 그룹 설정
-FE EC2
-80 포트: 공개 (ANY)
-22 포트 (SSH): Jenkins EC2에서만 허용
-BE EC2
-8080 포트: FE EC2에서만 허용
-22 포트 (SSH): Jenkins EC2에서만 허용
-Jenkins EC2
-80 포트: 개발자 집 IP에서만 허용
-RDS
-3306 포트: BE EC2에서만 허용
-배포 및 OpenAPI 연동 흐름
-Jenkins CI/CD Pipeline:
+| 요소       | 보안 설정 |
+|------------|--------------------------------|
+| **FE EC2**  | 80 포트: 공개 (ANY), 22 포트 (SSH): Jenkins EC2에서만 허용 |
+| **BE EC2**   | 8080 포트: FE EC2에서만 허용, 22 포트 (SSH): Jenkins EC2에서만 허용 |
+| **Jenkins EC2** | 80 포트: 개발자 IP에서만 허용 |
+| **RDS** | 3306 포트: BE EC2에서만 허용 |
+</details>
+
+
+<details>
+<summary>Jenkins CI/CD Pipeline 접기/펼치기</summary>
+
+
 GitHub에서 FE 및 BE 코드 체크아웃
 FE: Nuxt3 빌드 후 배포
-BE: Spring Boot 빌드 후 배포 & OpenAPI YAML 파일을 S3에 업로드
 FE 배포 시 OpenAPI 처리:
 Nuxt3 앱이 실행될 때 S3에서 YAML 파일을 다운로드
 OpenAPI Generator 실행하여 API 클라이언트 코드 생성
 클라이언트 코드 기반으로 BE EC2(Spring Boot)와 통신
+
+```
+pipeline {
+    agent any
+    environment {
+        AWS_REGION = 'ap-northeast-2'
+        REPO_URL = 'https://github.com/Myunwoo/stash_frontend.git'
+        BRANCH_NAME = 'main'
+        EC2_TARGET = '???'
+    }
+    stages {
+        stage('Checkout Source') {
+            steps {
+                echo 'Checking out source code...'
+                git branch: "${BRANCH_NAME}", url: "${REPO_URL}"
+            }
+        }
+        stage('Generate API Client') {
+            steps {
+                echo 'Generating OpenAPI client...'
+                sh '''
+                pnpm install
+                pnpm run oag:gen:prd
+                '''
+            }
+        }
+        stage('Build Nuxt3') {
+            steps {
+                echo 'Building Nuxt3...'
+                sh '''
+                NUXT_ENV=production pnpm run build
+                '''
+            }
+        }
+        stage('Deploy to EC2') {
+            steps {
+                echo 'Deploying to EC2...'
+                withCredentials([sshUserPrivateKey(credentialsId: 'frontend-deploy-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+                    sh '''
+                    echo "Testing SSH connection to EC2..."
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${EC2_TARGET} "echo connected"
+                    
+                    echo "Clearing previous deployment files..."
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${EC2_TARGET} "rm -rf /home/ubuntu/nuxt-app/*"
+                    
+                    echo "Transferring build files..."
+                    scp -o StrictHostKeyChecking=no -i $SSH_KEY -r .output/* ${EC2_TARGET}:/home/ubuntu/nuxt-app
+
+                    
+                    echo "Restarting Nuxt application..."
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${EC2_TARGET} "cd /home/ubuntu/nuxt-app/server && pm2 stop nuxt-app || true && pm2 start index.mjs --name nuxt-app"
+                    '''
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs for more details.'
+        }
+    }
+}
+```
 </details>
 
 ![스크린샷 2025-01-31 오후 10 49 12](https://github.com/user-attachments/assets/c8bd8621-ee88-4ab7-bc91-7f57893b161a)
