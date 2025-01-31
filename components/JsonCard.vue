@@ -49,7 +49,7 @@ const onClickCard = () => {
 
 <style scoped>
 .card {
-  width: 100%;
+  width: 95%;
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;

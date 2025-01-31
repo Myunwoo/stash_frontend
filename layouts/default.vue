@@ -47,7 +47,7 @@ const rotateImageMinus180 = (rotation: globalThis.Ref<number, number>) => {
   rotation.value = (rotation.value - 180) % 360
 }
 
-watch(isLeftFull, (newProps) => {
+watch(isLeftFull, (newProps: boolean) => {
   if (newProps) {
     rotateImageMinus180(leftArrowRotation)
   } else {
@@ -55,7 +55,7 @@ watch(isLeftFull, (newProps) => {
   }
 })
 
-watch(isRightFull, (newProps) => {
+watch(isRightFull, (newProps: boolean) => {
   if (newProps) {
     rotateImageMinus180(rightArrowRotation)
   } else {
@@ -162,6 +162,7 @@ const onMouseUp = () => {
 .main-layout {
   display: flex;
   min-height: 100vh;
+  width: 100%;
   height: 100%;
 }
 
