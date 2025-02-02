@@ -23,6 +23,8 @@
 
 **Nuxt3**, **Vue3**, **OpenAPI Generator**, **TypeScript**, **Pinia**, **Vite**
 
+[Open Api 적용기](https://velog.io/@fddsgt123/Open-API-Genrator) 
+
 ### 프로젝트 아키텍처
 
 <details>
