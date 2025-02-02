@@ -27,15 +27,10 @@ export default defineNuxtConfig({
       }
     },
   },
-  runtimeConfig: {
-    public: {
-      API_BASE_PATH: process.env.API_BASE_PATH ?? ''
-    }
-  },
   nitro: {
     devProxy: {
       '/api': {
-        target: process.env.API_BASE_URL,
+        target: 'http://localhost:8080',
         changeOrigin: true,
         autoRewrite: true
       }
